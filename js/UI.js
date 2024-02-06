@@ -1,5 +1,6 @@
 function intro() {
   background(0);
+  push();
   textFont("Oswald");
   textSize(windowWidth * 0.09);
   fill(10, 40, 50, 200);
@@ -9,6 +10,7 @@ function intro() {
   } else if (windowWidth > windowHeight) {
     text("Touch to begin", windowWidth / 2, windowHeight / 2);
   }
+  pop();
 }
 
 function title() {
@@ -59,7 +61,6 @@ function feeding() {
     tBoxAlphaDir *= -1;
   }
   push();
-  translate(windowWidth / 2, windowHeight / 2);
   imageMode(CENTER);
   for (let i = 0; i < animalBoxes.length; i++) {
     animalBoxes[i].display();
@@ -83,8 +84,6 @@ class animalBox {
 
   // Function to check if a point (mouse) is inside the object's bounds
   isInside(mouseX, mouseY) {
-    fill("black");
-    text(mouseX + mouseY, windowWidth - 200, windowHeight = 100);
     return (
       mouseX >= this.x &&
       mouseX <= this.x + this.width &&
@@ -95,7 +94,12 @@ class animalBox {
 
   // Function to display the object
   display() {
-    fill(80, 90, 100, tBoxAlpha);
+    // translate(windowWidth / 2, windowHeight / 2);
+    if(this.isInside(mouseX, mouseY)) {
+      fill(50, 180, 100, 50);
+    } else {
+      fill(80, 90, 100, tBoxAlpha);
+    }
     rect(this.x, this.y, this.width, this.height);
     image(this.image, this.x, this.y, this.width, this.height);
   }

@@ -23,7 +23,7 @@ let state = 0;
 let prevMouseState = false; // Track previous mouse state
 let currentMouseState = false; // Track current mouse state
 let lastClickTime = 0; // Track the time of the last click
-const clickCooldown = 500; // Set a cooldown time in milliseconds
+const clickCooldown = 200; // Set a cooldown time in milliseconds
 
 let tigerImg;
 let giraffeImg;
@@ -83,8 +83,10 @@ function setup() {
   centerX = canvasWidth / 2;
   centerY = canvasHeight / 2;
 
-  tigerObj = new animalBox(-150, 0, 210, 210, tigerImg, tigerSound, 0.05, "tiger");
-  giraffeObj = new animalBox(150, 0, 210, 210, giraffeImg, giraffeSound, 0.05, "giraffe");
+  push();
+  tigerObj = new animalBox(centerX - 150, centerY, 210, 210, tigerImg, tigerSound, 0.05, "tiger");
+  giraffeObj = new animalBox(centerX + 150, centerY, 210, 210, giraffeImg, giraffeSound, 0.05, "giraffe");
+  pop();
 
   animalBoxes.push(tigerObj);
   animalBoxes.push(giraffeObj);
@@ -98,6 +100,8 @@ function setup() {
 
 function draw() {
   bg();
+
+
 
   // print(state);
   if (state === 0) {
@@ -122,6 +126,14 @@ function draw() {
   //feeding state
   if (state === 3) {
     feeding();
+    push();
+    translate(0, 0);
+    textSize(windowWidth * 0.09);
+    fill("white");
+    textAlign(RIGHT, BOTTOM);
+    text("x: " + mouseX, windowWidth, windowHeight - 80);
+    text("y: " + mouseY, windowWidth, windowHeight);
+    pop();
   }
 }
 
