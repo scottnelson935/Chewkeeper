@@ -23,7 +23,7 @@ let state = 0;
 let prevMouseState = false; // Track previous mouse state
 let currentMouseState = false; // Track current mouse state
 let lastClickTime = 0; // Track the time of the last click
-const clickCooldown = 200; // Set a cooldown time in milliseconds
+const clickCooldown = 500; // Set a cooldown time in milliseconds
 
 let tigerImg;
 let giraffeImg;
@@ -54,7 +54,12 @@ function preload() {
     clouds.push(loadImage(`images/clouds${i}.jpeg`));
   }
 
-  lpf = new Tone.Filter(700, "lowpass", -12).toDestination();
+  lpf = new Tone.Filter({
+    frequency: 550, // Center frequency of the bandpass filter (in Hz)
+    type: "bandpass", // Filter type (in this case, bandpass)
+    rolloff: -24, // Roll-off rate of the filter (in dB per octave)
+    Q: 1 // Quality factor of the filter (dimensionless)
+  }).toDestination();
 
   rain = new Tone.Player("sounds/sample_rain.ogg");
   rain.loop = true;
@@ -83,25 +88,30 @@ function setup() {
   centerX = canvasWidth / 2;
   centerY = canvasHeight / 2;
 
-  push();
-  tigerObj = new animalBox(centerX - 150, centerY, 210, 210, tigerImg, tigerSound, 0.05, "tiger");
-  giraffeObj = new animalBox(centerX + 150, centerY, 210, 210, giraffeImg, giraffeSound, 0.05, "giraffe");
-  pop();
+  if (windowWidth < windowHeight) {
+    push();
+    tigerObj = new animalBox(centerX - windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, tigerImg, tigerSound, "tiger");
+    giraffeObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, giraffeImg, giraffeSound, "giraffe");
+    pop();
+  } else if (windowWidth > windowHeight) {
+    push();
+    tigerObj = new animalBox(centerX - windowWidth * 0.2, centerY, windowWidth * 0.2, windowWidth * 0.2, tigerImg, tigerSound, "tiger");
+    giraffeObj = new animalBox(centerX + windowWidth * 0.2, centerY, windowWidth * 0.2, windowWidth * 0.2, giraffeImg, giraffeSound, "giraffe");
+    pop();
+  }
 
   animalBoxes.push(tigerObj);
   animalBoxes.push(giraffeObj);
 
   bgBuffer = createGraphics(canvasWidth, canvasHeight);
 
-  for (var i = 0; i < 1800; i++) {
-    drops[i] = new Drop(bgBuffer);
-  }
+  // for (var i = 0; i < 1800; i++) {
+    drops[0] = new Drop(bgBuffer);
+  // }
 }
 
 function draw() {
   bg();
-
-
 
   // print(state);
   if (state === 0) {
@@ -159,12 +169,14 @@ function mousePressed() {
       // Add a condition to prevent state increment in the fourth state (state === 3)
       if (state !== 3) {
         state = (state + 1) % 4; // Cycle through states 0, 1, 2, and 3
-      } lastClickTime = currentTime; // Update the last click time
+      }
+      lastClickTime = currentTime; // Update the last click time
 
       if (state === 3) {
         for (let i = 0; i < animalBoxes.length; i++) {
           animalBoxes[i].handleClick();
           if (animalBoxes[i].clicked) {
+            animalBoxes[i].clicked = false;
             print(animalBoxes[i].name + "clicked!");
           }
         }

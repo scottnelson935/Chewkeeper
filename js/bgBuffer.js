@@ -39,6 +39,10 @@ function bg() {
   bgBuffer.image(clouds[2], x, y, scaledWidth, scaledHeight);
   bgBuffer.pop();
 
+
+  bgBuffer.push();
+  // angleMode(DEGREES);
+  bgBuffer.rotate(0.2);
   for (var i = 0; i < drops.length; i++) {
     drops[i].fall();
     drops[i].show(bgBuffer);
@@ -48,10 +52,14 @@ function bg() {
       drops.splice(i, 1);
     }
   }
+  bgBuffer.pop();
+
 
   // Add new raindrops if needed
-  if (random(1) < 0.2) {
-    drops.push(new Drop(bgBuffer));
+  if (drops.length < 1800) {
+    for (let i = 0; i < 1800 - drops.length; i++) {
+      drops.push(new Drop(bgBuffer));
+    }
   }
 
   image(bgBuffer, 0, 0);

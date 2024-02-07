@@ -26,12 +26,22 @@ function title() {
   push();
   textFont("Oswald");
   textSize(windowWidth * 0.09);
-  fill(10, 40, 50, 200);
+  fill(10, 40, 50, 165);
 
   if (windowWidth < windowHeight) {
     text("CHEWKEEPER", windowWidth / 2, windowHeight / 2.5);
+    push();
+    fill(255, 255, 255, 180);
+    textSize(windowWidth * 0.04);
+    text("TOUCH SCREEN TO CONTINUE", windowWidth / 2, (windowHeight / 9) * 8);
+    pop();
   } else if (windowWidth > windowHeight) {
     text("CHEWKEEPER", windowWidth / 2, windowHeight / 2);
+    push();
+    fill(255, 255, 255, 180);
+    textSize(windowWidth * 0.04);
+    text("TOUCH SCREEN TO CONTINUE", windowWidth / 2, (windowHeight / 9) * 8);
+    pop();
   }
   pop();
 }
@@ -39,18 +49,40 @@ function title() {
 function instructions() {
   //title rect
   fill(80, 90, 100, 80);
-  rect(windowWidth / 2, windowHeight / 2, 300, 120);
+  if (windowWidth < windowHeight) {
+    rect(windowWidth / 2, windowHeight / 2.5, 475, 300);
+  } else if (windowWidth > windowHeight) {
+    rect(windowWidth / 2, windowHeight / 2 - 5, windowWidth * 0.5, windowWidth * 0.27);
+  }
+  // rect(windowWidth / 2, windowHeight / 2.5, 475, 300);
 
   //instructions text
   push();
   textFont("Oswald");
-  textSize(24);
-  fill(10, 40, 50, 200);
-  text(
-    "Select the image\nof an animal\nyou'd like to feed",
-    windowWidth / 2,
-    windowHeight / 2
-  );
+  textAlign(CENTER, CENTER);
+  textSize(windowWidth * 0.07);
+  fill(10, 40, 50, 165);
+  if (windowWidth < windowHeight) {
+    text(
+      "Select the image\nof an animal\nyou'd like to feed",
+      windowWidth / 2,
+      windowHeight / 2.5
+    ); push();
+    fill(255, 255, 255, 180);
+    textSize(windowWidth * 0.04);
+    text("TOUCH SCREEN TO CONTINUE", windowWidth / 2, (windowHeight / 9) * 8);
+    pop();
+  } else if (windowWidth > windowHeight) {
+    text(
+      "Select the image\nof an animal\nyou'd like to feed",
+      windowWidth / 2,
+      windowHeight / 2
+    ); push();
+    fill(255, 255, 255, 180);
+    textSize(windowWidth * 0.04);
+    text("TOUCH SCREEN TO CONTINUE", windowWidth / 2, (windowHeight / 9) * 8);
+    pop();
+  }
   pop();
 }
 
@@ -61,7 +93,7 @@ function feeding() {
     tBoxAlphaDir *= -1;
   }
   push();
-  imageMode(CENTER);
+  // imageMode(CENTER);
   for (let i = 0; i < animalBoxes.length; i++) {
     animalBoxes[i].display();
     animalBoxes[i].isInside();
@@ -70,7 +102,7 @@ function feeding() {
 }
 
 class animalBox {
-  constructor(x, y, width, height, image, sound, scale, name) {
+  constructor(x, y, width, height, image, sound, name) {
     this.name = name;
     this.x = x; // x-coordinate of the object
     this.y = y; // y-coordinate of the object
@@ -79,15 +111,15 @@ class animalBox {
     this.image = image; // image to display
     this.sound = sound; // sound to play when clicked
     this.clicked = false; // flag to track if the object is clicked
-    this.scale = scale;
+    // this.scale = scale;
   }
 
   // Function to check if a point (mouse) is inside the object's bounds
   isInside(mouseX, mouseY) {
     return (
       mouseX >= this.x &&
-      mouseX <= this.x + this.width &&
-      mouseY >= this.y &&
+      mouseX <= this.x + this.width  &&
+      mouseY >= this.y  &&
       mouseY <= this.y + this.height
     );
   }
@@ -95,7 +127,7 @@ class animalBox {
   // Function to display the object
   display() {
     // translate(windowWidth / 2, windowHeight / 2);
-    if(this.isInside(mouseX, mouseY)) {
+    if (this.isInside(mouseX, mouseY)) {
       fill(50, 180, 100, 50);
     } else {
       fill(80, 90, 100, tBoxAlpha);
