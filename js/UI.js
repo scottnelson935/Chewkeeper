@@ -132,8 +132,12 @@ class animalBox {
     } else {
       fill(80, 90, 100, tBoxAlpha);
     }
+    push();
+    imageMode(CENTER);
+    rectMode(CENTER);
     rect(this.x, this.y, this.width, this.height);
     image(this.image, this.x, this.y, this.width, this.height);
+    pop();
   }
 
   // Function to handle click event
