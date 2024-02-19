@@ -71,6 +71,9 @@ let audioStarted = false;
 
 let rain1Start = false;
 let rain2Start = false;
+const soundDuration = 30;
+const fadeDuration = 5;
+const overlapStartTime = soundDuration - fadeDuration;
 
 let transportStart = false;
 
@@ -102,9 +105,6 @@ function preload() {
   rain1.connect(lpf);
 
   rain2 = new Tone.Player("sounds/sample_rain.ogg", () => {
-    const soundDuration = 30;
-    const fadeDuration = 5;
-    const overlapStartTime = soundDuration - fadeDuration;
     rain2.sync().start(overlapStartTime);
   });
   rain2.loop = true;
@@ -189,7 +189,7 @@ function draw() {
   //     rain2.start(overlapTime);
   //   });
   // }
-  
+
   // print(state);
   if (state === 0) {
     intro();

@@ -20,7 +20,7 @@ function Drop(buffer) {
     // Reset the drop when it goes off the screen
     if (this.y > canvasHeight || this.x < -75 || this.x > canvasWidth + 75) {
       this.y = random(-200, -100);
-      this.x = random(-75, canvasWidth + 75);
+      this.x = random(0, canvasWidth + 300);
       this.yspeed = map(this.z, 0, 2, 8, 12);
     }
   };
