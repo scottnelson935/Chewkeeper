@@ -117,10 +117,10 @@ class animalBox {
   // Function to check if a point (mouse) is inside the object's bounds
   isInside(mouseX, mouseY) {
     return (
-      mouseX >= this.x &&
-      mouseX <= this.x + this.width  &&
-      mouseY >= this.y  &&
-      mouseY <= this.y + this.height
+      mouseX >= this.x -100 &&
+      mouseX <= this.x + this.width -100 &&
+      mouseY >= this.y -100 &&
+      mouseY <= this.y + this.height -100
     );
   }
 
@@ -136,7 +136,7 @@ class animalBox {
     imageMode(CENTER);
     rectMode(CENTER);
     rect(this.x, this.y, this.width, this.height);
-    image(this.image, this.x, this.y, this.width, this.height);
+    image(this.image, this.x, this.y, this.width/1.5, this.height/1.5);
     pop();
   }
 

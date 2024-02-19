@@ -27,18 +27,52 @@ const clickCooldown = 500; // Set a cooldown time in milliseconds
 
 let tigerImg;
 let giraffeImg;
-let rain;
+let donkeyImg;
+let hippoImg;
+let macawImg;
+let siamangImg;
+let nyalaImg;
+let parrotImg;
+let rhinoImg;
+let tapirImg;
+let chinchillaImg;
+
+
+let rain1;
+let rain2;
+
 let tigerSound;
 let giraffeSound;
+let donkeySound;
+let hippoSound;
+let macawSound;
+let siamangSound;
+let nyalaSound;
+let parrotSound;
+let rhinoSound;
+let tapirSound;
+let chinchillaSound;
 
 let tigerObj;
 let giraffeObj;
+let donkeyObj;
+let hippoObj;
+let macawObj;
+let siamangObj;
+let nyalaObj;
+let parrotObj;
+let rhinoObj;
+let tapirObj;
+let chinchillaObj;
 
 let animalBoxes = [];
 
 let audioStarted = false;
 
-let rainStart = false;
+let rain1Start = false;
+let rain2Start = false;
+
+let transportStart = false;
 
 let textSizeFactor = 0.09;
 
@@ -61,9 +95,26 @@ function preload() {
     Q: 1 // Quality factor of the filter (dimensionless)
   }).toDestination();
 
-  rain = new Tone.Player("sounds/sample_rain.ogg");
-  rain.loop = true;
-  rain.connect(lpf);
+  rain1 = new Tone.Player("sounds/sample_rain.ogg", () => {
+    rain1.sync().start(0);
+  });
+  rain1.loop = true;
+  rain1.connect(lpf);
+
+  rain2 = new Tone.Player("sounds/sample_rain.ogg", () => {
+    const soundDuration = 30;
+    const fadeDuration = 5;
+    const overlapStartTime = soundDuration - fadeDuration;
+    rain2.sync().start(overlapStartTime);
+  });
+  rain2.loop = true;
+  rain2.connect(lpf);
+
+  rain1.loopEnd = soundDuration;
+  rain2.loopEnd = soundDuration;
+
+  // const fadeDuration = 5; // Adjust this value based on the length of the fade
+  // const overlapTime = player1.buffer.duration - fadeDuration;
 
 
   tigerSound = new Tone.Player(
@@ -75,8 +126,17 @@ function preload() {
   ).toDestination();
 
 
-  tigerImg = loadImage("images/tiger.png");
-  giraffeImg = loadImage("images/giraffe.png");
+  tigerImg = loadImage("images/tigerIcon.png");
+  giraffeImg = loadImage("images/giraffeIcon.png");
+  donkeyImg = loadImage("images/donkeyIcon.png");
+  hippoImg = loadImage("images/hippoIcon.png");
+  macawImg = loadImage("images/macawIcon.png");
+  siamangImg = loadImage("images/monkeyIcon.png");
+  nyalaImg = loadImage("images/nyalaIcon.png");
+  parrotImg = loadImage("images/parrotIcon.png");
+  rhinoImg = loadImage("images/rhinoIcon.png");
+  tapirImg = loadImage("images/tapirIcon.png");
+  chinchillaImg = loadImage("images/chinchillaIcon.png");
 }
 
 function setup() {
@@ -92,6 +152,15 @@ function setup() {
     push();
     tigerObj = new animalBox(centerX - windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, tigerImg, tigerSound, "tiger");
     giraffeObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, giraffeImg, giraffeSound, "giraffe");
+    // donkeyObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, donkeyImg, donkeySound, "donkey");
+    // hippoObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, hippoImg, hippoSound, "hippo");
+    // macawObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, macawImg, macawSound, "macaw");
+    // siamangObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, siamangImg, siamangSound, "siamang");
+    // nyalaObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, nyalaImg, nyalaSound, "nyala");
+    // parrotObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, parrotImg, parrotSound, "parrot");
+    // rhinoObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, rhinoImg, rhinoSound, "rhino");
+    // tapirObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, tapirImg, tapirSound, "tapir");
+    // chinchillaObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, chinchillaImg, chinchillaSound, "chinchilla");
     pop();
   } else if (windowWidth > windowHeight) {
     push();
@@ -106,13 +175,21 @@ function setup() {
   bgBuffer = createGraphics(canvasWidth, canvasHeight);
 
   // for (var i = 0; i < 1800; i++) {
-    drops[0] = new Drop(bgBuffer);
+  drops[0] = new Drop(bgBuffer);
   // }
 }
 
 function draw() {
   bg();
 
+  print('rain1: ' + rain1.state, 'rain2: ' + rain2.state);
+
+  // if (rain1.state === "started") {
+  //   rain1.on('end', () => {
+  //     rain2.start(overlapTime);
+  //   });
+  // }
+  
   // print(state);
   if (state === 0) {
     intro();
@@ -121,10 +198,16 @@ function draw() {
   //title state
   if (state === 1) {
     title();
-    if (rainStart === false) {
-      rain.start();
-      rainStart = true;
+
+    if (transportStart === false) {
+      Tone.Transport.start();
+      transportStart = true;
     }
+
+    // if (rain1Start === false) {
+    //   rain1.start();
+    //   rain1Start = true;
+    // }
     // print(rainStart);
   }
 
