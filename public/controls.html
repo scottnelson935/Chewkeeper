@@ -1,0 +1,14 @@
+<script src="/socket.io/socket.io.js"></script>
+
+<button onclick="myFunc()">textInTheMiddleSoWeCanEasilySeeIt</button>
+<script>
+
+    let socketName = 'default';
+    let socket = io();
+
+    function myFunc() {
+        socket.emit('firstMessage', true);
+    }
+
+</script>
+

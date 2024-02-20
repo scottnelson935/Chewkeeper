@@ -3,6 +3,11 @@
 
 //store sounds in a buffer in Tone and set the length (using setTimeout)
 
+let socketName = 'default';
+let socket = io();
+
+// let gainNode
+
 let clouds = [];
 let cloudA = [];
 let numClouds = 3;
@@ -17,7 +22,7 @@ let cloudAlphaDirection = -1;
 let tBoxAlpha = 120;
 let tBoxAlphaDir = -1;
 
-
+let pieceEnd = false;
 
 let drops = [];
 
@@ -189,6 +194,15 @@ function setup() {
 
 function draw() {
   bg();
+
+  socket.on("firstEmit", () => {
+    if (pieceEnd === false) {
+      //send all audio to a gain node first, and then:
+      Tone.getDestination().volume.rampTo(-Infinity, 20);
+      pieceEnd = true;
+    }
+
+  });
 
   print('rain1: ' + rain1.state, 'rain2: ' + rain2.state);
 
