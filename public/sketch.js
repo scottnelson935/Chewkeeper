@@ -39,16 +39,16 @@ const clickCooldown = 500; // Set a cooldown time in milliseconds
 
 let tigerImg;
 let giraffeImg;
-let donkeyImg;
+let opossumImg;
 let hippoImg;
 let macawImg;
 let siamangImg;
 let nyalaImg;
-let parrotImg;
+let bearImg;
 let rhinoImg;
 let tapirImg;
 let chinchillaImg;
-
+let jaguarImg;
 
 let rain1;
 let rain2;
@@ -57,41 +57,42 @@ let rainBuff2;
 
 let tigerBuff;
 let giraffeBuff;
-let donkeyBuff;
+let opossumBuff;
 let hippoBuff;
 let macawBuff;
 let siamangBuff;
 let nyalaBuff;
-let parrotBuff;
+let bearBuff;
 let rhinoBuff;
 let tapirBuff;
 let chinchillaBuff;
+let jaguarBuff;
 
 let tigerSound;
 let giraffeSound;
-let donkeySound;
+let opossumSound;
 let hippoSound;
 let macawSound;
 let siamangSound;
 let nyalaSound;
-let parrotSound;
+let bearSound;
 let rhinoSound;
 let tapirSound;
 let chinchillaSound;
-
-
+let jaguarSound;
 
 let tigerObj;
 let giraffeObj;
-let donkeyObj;
+let opossumObj;
 let hippoObj;
 let macawObj;
 let siamangObj;
 let nyalaObj;
-let parrotObj;
+let bearObj;
 let rhinoObj;
 let tapirObj;
 let chinchillaObj;
+let jaguarObj;
 
 let animals = [];
 
@@ -162,17 +163,18 @@ function preload() {
   rain1.loopEnd = soundDuration;
   rain2.loopEnd = soundDuration;
 
-  tigerBuff = new Tone.Buffer("https://cdn.freesound.org/previews/194/194943_1160789-lq.mp3");
-  giraffeBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  donkeyBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  hippoBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  macawBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  siamangBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  nyalaBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  parrotBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  rhinoBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  tapirBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
-  chinchillaBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.ogg");
+  giraffeBuff = new Tone.Buffer("sounds/Giraffe.ogg");
+  opossumBuff = new Tone.Buffer("sounds/Opossum.ogg");
+  hippoBuff = new Tone.Buffer("sounds/Bear.ogg");
+  macawBuff = new Tone.Buffer("sounds/Bear.ogg");
+  siamangBuff = new Tone.Buffer("sounds/Bear.ogg");
+  nyalaBuff = new Tone.Buffer("sounds/Bear.ogg");
+  bearBuff = new Tone.Buffer("sounds/Bear.ogg");
+  rhinoBuff = new Tone.Buffer("sounds/Bear.ogg");
+  tapirBuff = new Tone.Buffer("sounds/Bear.ogg");
+  chinchillaBuff = new Tone.Buffer("sounds/Nutria.ogg");
+  jaguarBuff = new Tone.Buffer("sounds/Jaguar2.ogg");
 
   tigerSound = new Tone.Player(
     tigerBuff
@@ -180,8 +182,8 @@ function preload() {
   giraffeSound = new Tone.Player(
     giraffeBuff
   ).toDestination();
-  donkeySound = new Tone.Player(
-    donkeyBuff
+  opossumSound = new Tone.Player(
+    opossumBuff
   ).toDestination();
   hippoSound = new Tone.Player(
     hippoBuff
@@ -195,8 +197,8 @@ function preload() {
   nyalaSound = new Tone.Player(
     nyalaBuff
   ).toDestination();
-  parrotSound = new Tone.Player(
-    parrotBuff
+  bearSound = new Tone.Player(
+    bearBuff
   ).toDestination();
   rhinoSound = new Tone.Player(
     rhinoBuff
@@ -207,32 +209,37 @@ function preload() {
   chinchillaSound = new Tone.Player(
     chinchillaBuff
   ).toDestination();
-
+  jaguarSound = new Tone.Player(
+    jaguarBuff
+  ).toDestination();
 
   tigerImg = loadImage("images/tigerIcon.png");
   giraffeImg = loadImage("images/giraffeIcon.png");
-  donkeyImg = loadImage("images/donkeyIcon.png");
+  opossumImg = loadImage("images/opossumIcon.png");
   hippoImg = loadImage("images/hippoIcon.png");
   macawImg = loadImage("images/macawIcon.png");
   siamangImg = loadImage("images/siamangIcon.png");
   nyalaImg = loadImage("images/nyalaIcon.png");
-  parrotImg = loadImage("images/parrotIcon.png");
+  bearImg = loadImage("images/bearIcon.png");
   rhinoImg = loadImage("images/rhinoIcon.png");
   tapirImg = loadImage("images/tapirIcon.png");
   chinchillaImg = loadImage("images/chinchillaIcon.png");
+  jaguarImg = loadImage("images/jaguarIcon.png");
 
   animals = [
     { name: "tiger", img: tigerImg, sound: tigerSound, buffer: tigerBuff },
     { name: "giraffe", img: giraffeImg, sound: giraffeSound, buffer: giraffeBuff },
-    { name: "donkey", img: donkeyImg, sound: donkeySound, buffer: donkeyBuff },
+    { name: "opossum", img: opossumImg, sound: opossumSound, buffer: opossumBuff },
     { name: "hippo", img: hippoImg, sound: hippoSound, buffer: hippoBuff },
     { name: "macaw", img: macawImg, sound: macawSound, buffer: macawBuff },
     { name: "siamang", img: siamangImg, sound: siamangSound, buffer: siamangBuff },
     { name: "nyala", img: nyalaImg, sound: nyalaSound, buffer: nyalaBuff },
-    { name: "parrot", img: parrotImg, sound: parrotSound, buffer: parrotBuff },
+    { name: "bear", img: bearImg, sound: bearSound, buffer: bearBuff },
     { name: "rhino", img: rhinoImg, sound: rhinoSound, buffer: rhinoBuff },
     { name: "tapir", img: tapirImg, sound: tapirSound, buffer: tapirBuff },
-    { name: "chinchilla", img: chinchillaImg, sound: chinchillaSound, buffer: chinchillaBuff },
+    { name: "nutria", img: chinchillaImg, sound: chinchillaSound, buffer: chinchillaBuff },
+    { name: "jaguar", img: jaguarImg, sound: jaguarSound, buffer: jaguarBuff },
+
   ];
 }
 
