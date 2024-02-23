@@ -6,6 +6,9 @@
 let socketName = 'default';
 let socket = io();
 
+// let timeToEnd1;
+// let timeToEnd2;
+
 // let gainNode
 
 let clouds = [];
@@ -238,7 +241,8 @@ let animalWidth, animalHeight;
 function setup() {
   canvasWidth = windowWidth;
   canvasHeight = windowHeight;
-  createCanvas(canvasWidth, canvasHeight);
+  let cnv = createCanvas(canvasWidth, canvasHeight);
+  cnv.parent('p5cnv');
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
   centerX = canvasWidth / 2;
@@ -290,7 +294,7 @@ function draw() {
     return;
   }
 
-  bg();
+  clear();
 
   socket.on("firstEmit", () => {
     if (pieceEnd === false) {
@@ -301,15 +305,6 @@ function draw() {
 
   });
 
-  // print('rain1: ' + rain1.state, 'rain2: ' + rain2.state);
-
-  // if (rain1.state === "started") {
-  //   rain1.on('end', () => {
-  //     rain2.start(overlapTime);
-  //   });
-  // }
-
-  // print(state);
   if (state === 0) {
     intro();
   }
@@ -325,12 +320,6 @@ function draw() {
       // console.log(rainBuff1.duration);
       transportStart = true;
     }
-
-    // if (rain1Start === false) {
-    //   rain1.start();
-    //   rain1Start = true;
-    // }
-    // print(rainStart);
   }
 
   //instructions state
@@ -421,3 +410,55 @@ function windowResized() {
     drops.push(new Drop(bgBuffer)); // Pass the graphics buffer as an argument
   }
 }
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const video1 = document.getElementById('video1');
+//   const video2 = document.getElementById('video2');
+//   let fadingOut = null; // Track which video is currently fading out
+
+//   video1.style.opacity = 1; // Start with video1 fully visible
+//   video2.style.opacity = 0; // Ensure video2 starts hidden
+//   video1.play();
+
+//   let crossfadeDuration = 10; // Duration of the crossfade in seconds
+//   let checkInterval = 500; // How often to check the video time in milliseconds
+
+//   function setupCrossfade() {
+//     function fade(fromVideo, toVideo) {
+//       if (fadingOut === fromVideo) return; // Prevent double fading
+//       fadingOut = fromVideo; // Mark this video as fading out
+
+//       let fadeEffect = setInterval(() => {
+//         let step = 1 / (crossfadeDuration * 1000 / checkInterval);
+//         let fromOpacity = parseFloat(fromVideo.style.opacity) || 1;
+//         let toOpacity = parseFloat(toVideo.style.opacity) || 0;
+
+//         fromVideo.style.opacity = Math.max(0, fromOpacity - step);
+//         toVideo.style.opacity = Math.min(1, toOpacity + step);
+
+//         if (fromVideo.style.opacity <= 0) {
+//           clearInterval(fadeEffect); // End the interval when fully transparent
+//           fadingOut = null; // Reset fading out flag
+//         }
+//       }, checkInterval);
+//     }
+
+//     setInterval(() => {
+//       let timeToEnd1 = video1.duration - video1.currentTime;
+
+//       if (timeToEnd1 <= crossfadeDuration && video1.style.opacity == 1 && video2.style.opacity == 0 && !fadingOut) {
+//         fade(video1, video2);
+//       }
+
+//       if (video2.played.length) {
+//         let timeToEnd2 = video2.duration - video2.currentTime;
+
+//         if (timeToEnd2 <= crossfadeDuration && video2.style.opacity == 1 && video1.style.opacity == 0 && !fadingOut) {
+//           fade(video2, video1);
+//         }
+//       }
+//     }, checkInterval);
+//   }
+
+//   setupCrossfade();
+// });

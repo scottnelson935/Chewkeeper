@@ -6,3 +6,39 @@ html, body {
 canvas {
   display: block;
 }
+
+video {
+  opacity: 0.7;
+  transition: opacity 2s ease;
+}
+
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.video-container video {
+  display: none;
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  /* These next two lines are key to maintaining aspect ratio while covering */
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.video-container video,
+.video-container #p5cnv {
+  position: absolute;
+}
+
+#p5cnv {
+  z-index: 10;
+}

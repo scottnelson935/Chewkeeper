@@ -14,6 +14,11 @@ function intro() {
 }
 
 function title() {
+  let videoStarted = false;
+  if (!videoStarted) {
+    document.querySelector('.video-container video').style.display = 'block';
+  }
+
   //title rect
   fill(80, 90, 100, 80);
   if (windowWidth < windowHeight) {
