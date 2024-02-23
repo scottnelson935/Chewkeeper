@@ -49,6 +49,20 @@ let chinchillaImg;
 
 let rain1;
 let rain2;
+let rainBuff1;
+let rainBuff2;
+
+let tigerBuff;
+let giraffeBuff;
+let donkeyBuff;
+let hippoBuff;
+let macawBuff;
+let siamangBuff;
+let nyalaBuff;
+let parrotBuff;
+let rhinoBuff;
+let tapirBuff;
+let chinchillaBuff;
 
 let tigerSound;
 let giraffeSound;
@@ -62,6 +76,8 @@ let rhinoSound;
 let tapirSound;
 let chinchillaSound;
 
+
+
 let tigerObj;
 let giraffeObj;
 let donkeyObj;
@@ -73,6 +89,8 @@ let parrotObj;
 let rhinoObj;
 let tapirObj;
 let chinchillaObj;
+
+let animals = [];
 
 let animalBoxes = [];
 
@@ -95,9 +113,23 @@ let state3 = false;
 
 let lpf;
 
-let rain3;
+let canClick = true;
+
+let fontReady = false;
 
 function preload() {
+
+  WebFont.load({
+    google: {
+      families: ['Oswald:wght@200..700']
+    },
+    active: function () {
+      // This function is called when the font has been loaded
+      // Initialize your sketch or indicate that the font is ready
+      fontReady = true; // You can use a global variable to track the font load status
+    }
+  });
+
   for (let i = 1; i <= numClouds; i++) {
     clouds.push(loadImage(`images/clouds${i}.jpeg`));
   }
@@ -109,15 +141,16 @@ function preload() {
     Q: 1 // Quality factor of the filter (dimensionless)
   }).toDestination();
 
-  rain3 = new Tone.Buffer("sounds/sample_rain.ogg");
+  rainBuff1 = new Tone.Buffer("sounds/sample_rain.ogg");
+  rainBuff2 = new Tone.Buffer("sounds/sample_rain.ogg");
 
-  rain1 = new Tone.Player(rain3, () => {
+  rain1 = new Tone.Player(rainBuff1, () => {
     rain1.sync().start(0);
   });
   rain1.loop = true;
   rain1.connect(lpf);
 
-  rain2 = new Tone.Player("sounds/sample_rain.ogg", () => {
+  rain2 = new Tone.Player(rainBuff2, () => {
     rain2.sync().start(overlapStartTime);
   });
   rain2.loop = true;
@@ -126,16 +159,50 @@ function preload() {
   rain1.loopEnd = soundDuration;
   rain2.loopEnd = soundDuration;
 
-  // const fadeDuration = 5; // Adjust this value based on the length of the fade
-  // const overlapTime = player1.buffer.duration - fadeDuration;
-
+  tigerBuff = new Tone.Buffer("https://cdn.freesound.org/previews/194/194943_1160789-lq.mp3");
+  giraffeBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  donkeyBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  hippoBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  macawBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  siamangBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  nyalaBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  parrotBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  rhinoBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  tapirBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
+  chinchillaBuff = new Tone.Buffer("https://cdn.freesound.org/previews/35/35143_328279-lq.mp3");
 
   tigerSound = new Tone.Player(
-    "https://cdn.freesound.org/previews/194/194943_1160789-lq.mp3"
+    tigerBuff
   ).toDestination();
-
   giraffeSound = new Tone.Player(
-    "https://cdn.freesound.org/previews/35/35143_328279-lq.mp3"
+    giraffeBuff
+  ).toDestination();
+  donkeySound = new Tone.Player(
+    donkeyBuff
+  ).toDestination();
+  hippoSound = new Tone.Player(
+    hippoBuff
+  ).toDestination();
+  macawSound = new Tone.Player(
+    macawBuff
+  ).toDestination();
+  siamangSound = new Tone.Player(
+    siamangBuff
+  ).toDestination();
+  nyalaSound = new Tone.Player(
+    nyalaBuff
+  ).toDestination();
+  parrotSound = new Tone.Player(
+    parrotBuff
+  ).toDestination();
+  rhinoSound = new Tone.Player(
+    rhinoBuff
+  ).toDestination();
+  tapirSound = new Tone.Player(
+    tapirBuff
+  ).toDestination();
+  chinchillaSound = new Tone.Player(
+    chinchillaBuff
   ).toDestination();
 
 
@@ -144,13 +211,29 @@ function preload() {
   donkeyImg = loadImage("images/donkeyIcon.png");
   hippoImg = loadImage("images/hippoIcon.png");
   macawImg = loadImage("images/macawIcon.png");
-  siamangImg = loadImage("images/monkeyIcon.png");
+  siamangImg = loadImage("images/siamangIcon.png");
   nyalaImg = loadImage("images/nyalaIcon.png");
   parrotImg = loadImage("images/parrotIcon.png");
   rhinoImg = loadImage("images/rhinoIcon.png");
   tapirImg = loadImage("images/tapirIcon.png");
   chinchillaImg = loadImage("images/chinchillaIcon.png");
+
+  animals = [
+    { name: "tiger", img: tigerImg, sound: tigerSound, buffer: tigerBuff },
+    { name: "giraffe", img: giraffeImg, sound: giraffeSound, buffer: giraffeBuff },
+    { name: "donkey", img: donkeyImg, sound: donkeySound, buffer: donkeyBuff },
+    { name: "hippo", img: hippoImg, sound: hippoSound, buffer: hippoBuff },
+    { name: "macaw", img: macawImg, sound: macawSound, buffer: macawBuff },
+    { name: "siamang", img: siamangImg, sound: siamangSound, buffer: siamangBuff },
+    { name: "nyala", img: nyalaImg, sound: nyalaSound, buffer: nyalaBuff },
+    { name: "parrot", img: parrotImg, sound: parrotSound, buffer: parrotBuff },
+    { name: "rhino", img: rhinoImg, sound: rhinoSound, buffer: rhinoBuff },
+    { name: "tapir", img: tapirImg, sound: tapirSound, buffer: tapirBuff },
+    { name: "chinchilla", img: chinchillaImg, sound: chinchillaSound, buffer: chinchillaBuff },
+  ];
 }
+
+let animalWidth, animalHeight;
 
 function setup() {
   canvasWidth = windowWidth;
@@ -161,38 +244,52 @@ function setup() {
   centerX = canvasWidth / 2;
   centerY = canvasHeight / 2;
 
+  // Clear the animalBoxes array to avoid duplicating boxes if setup is called more than once
+  animalBoxes = [];
+
+  
+
   if (windowWidth < windowHeight) {
-    push();
-    tigerObj = new animalBox(centerX - windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, tigerImg, tigerSound, "tiger");
-    giraffeObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, giraffeImg, giraffeSound, "giraffe");
-    // donkeyObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, donkeyImg, donkeySound, "donkey");
-    // hippoObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, hippoImg, hippoSound, "hippo");
-    // macawObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, macawImg, macawSound, "macaw");
-    // siamangObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, siamangImg, siamangSound, "siamang");
-    // nyalaObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, nyalaImg, nyalaSound, "nyala");
-    // parrotObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, parrotImg, parrotSound, "parrot");
-    // rhinoObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, rhinoImg, rhinoSound, "rhino");
-    // tapirObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, tapirImg, tapirSound, "tapir");
-    // chinchillaObj = new animalBox(centerX + windowWidth * 0.26, centerY, windowWidth * 0.4, windowWidth * 0.4, chinchillaImg, chinchillaSound, "chinchilla");
-    pop();
+    animalWidth = windowWidth * 0.3;
+    animalHeight = animalWidth;
   } else if (windowWidth > windowHeight) {
-    push();
-    tigerObj = new animalBox(centerX - windowWidth * 0.2, centerY, windowWidth * 0.2, windowWidth * 0.2, tigerImg, tigerSound, "tiger");
-    giraffeObj = new animalBox(centerX + windowWidth * 0.2, centerY, windowWidth * 0.2, windowWidth * 0.2, giraffeImg, giraffeSound, "giraffe");
-    pop();
+    animalWidth = windowWidth / 7.5; // 6 animals per row
+    animalHeight = animalWidth; // Two rows
   }
 
-  animalBoxes.push(tigerObj);
-  animalBoxes.push(giraffeObj);
+  // Loop through each animal and position them
+  animals.forEach((animal, index) => {
+    let x, y;
+    if (windowWidth < windowHeight) {
+      // Position for two columns of six
+      let column = index % 2; // 0 or 1
+      let row = Math.floor(index / 2);
+      x = column * (windowWidth / 2) + animalWidth / 4 + (windowWidth * 0.17); // Centering adjustment
+      y = (row * (windowHeight / 6.5)) + (animalHeight / 6.5) + (windowWidth * 0.17);
+    } else {
+      // Position for two rows of six
+      let row = Math.floor(index / 6); // 0 or 1
+      let column = index % 6;
+      x = (column * (windowWidth / 6)) + (animalWidth / 6) + (windowWidth * 0.06);
+      y = row * (windowHeight / 2) + animalHeight / 4 + (windowWidth * 0.06); // Centering adjustment
+    }
+
+    // Create a new animalBox at the calculated position
+    let newBox = new animalBox(x, y, animalWidth, animalHeight, animal.img, animal.sound, animal.name, animal.buffer);
+    animalBoxes.push(newBox); // Add the new animalBox to the array
+  });
 
   bgBuffer = createGraphics(canvasWidth, canvasHeight);
 
-  // for (var i = 0; i < 1800; i++) {
   drops[0] = new Drop(bgBuffer);
-  // }
 }
 
 function draw() {
+  //Only display intro text if font is ready
+  if (!fontReady) {
+    return;
+  }
+
   bg();
 
   socket.on("firstEmit", () => {
@@ -204,7 +301,7 @@ function draw() {
 
   });
 
-  print('rain1: ' + rain1.state, 'rain2: ' + rain2.state);
+  // print('rain1: ' + rain1.state, 'rain2: ' + rain2.state);
 
   // if (rain1.state === "started") {
   //   rain1.on('end', () => {
@@ -221,9 +318,11 @@ function draw() {
   if (state === 1) {
     title();
 
+
+
     if (transportStart === false) {
       Tone.Transport.start();
-      console.log(rain3.duration);
+      // console.log(rainBuff1.duration);
       transportStart = true;
     }
 
@@ -242,14 +341,14 @@ function draw() {
   //feeding state
   if (state === 3) {
     feeding();
-    push();
-    translate(0, 0);
-    textSize(windowWidth * 0.09);
-    fill("white");
-    textAlign(RIGHT, BOTTOM);
-    text("x: " + mouseX, windowWidth, windowHeight - 80);
-    text("y: " + mouseY, windowWidth, windowHeight);
-    pop();
+    // push();
+    // translate(0, 0);
+    // textSize(windowWidth * 0.09);
+    // fill("white");
+    // textAlign(RIGHT, BOTTOM);
+    // text("x: " + mouseX, windowWidth, windowHeight - 80);
+    // text("y: " + mouseY, windowWidth, windowHeight);
+    // pop();
   }
 }
 
@@ -283,7 +382,7 @@ function mousePressed() {
           animalBoxes[i].handleClick();
           if (animalBoxes[i].clicked) {
             animalBoxes[i].clicked = false;
-            print(animalBoxes[i].name + "clicked!");
+            // print(animalBoxes[i].name + "clicked!");
           }
         }
       }
@@ -301,7 +400,9 @@ function mouseReleased() {
 
 function startAudioContext() {
   if (!audioStarted) {
-    Tone.start();
+    setTimeout(() => {
+      Tone.start();
+    }, 50);
     audioStarted = true;
     print("Tone started!");
   }
