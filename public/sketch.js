@@ -365,20 +365,23 @@ function mousePressed() {
     if (currentTime - lastClickTime > clickCooldown) {
       if (state === 0) {
         startAudioContext();
+        state = (state + 1) % 4; // This will transition state from 0 to 1
+        if (!isVideoPlaying()) {
+          playVideo(); // Play video only if it's not already playing
+        }
+      } else if (state !== 3) {
+        state = (state + 1) % 4; // Cycle through states 1, 2, and avoid resetting video in state 3
       }
 
-      // Add a condition to prevent state increment in the fourth state (state === 3)
-      if (state !== 3) {
-        state = (state + 1) % 4; // Cycle through states 0, 1, 2, and 3
-      }
       lastClickTime = currentTime; // Update the last click time
 
       if (state === 3) {
+        // Handling for the feeding state
         for (let i = 0; i < animalBoxes.length; i++) {
           animalBoxes[i].handleClick();
           if (animalBoxes[i].clicked) {
             animalBoxes[i].clicked = false;
-            // print(animalBoxes[i].name + "clicked!");
+            // Logic for when an animal box is clicked
           }
         }
       }
@@ -416,6 +419,23 @@ function windowResized() {
   for (var i = 0; i < 1800; i++) {
     drops.push(new Drop(bgBuffer)); // Pass the graphics buffer as an argument
   }
+}
+
+function playVideo() {
+  // This function is responsible for playing the video when called
+  var video = document.getElementById('video1');
+  video.play()
+    .then(() => {
+      // Video playback started successfully
+    })
+    .catch(error => {
+      console.error("Error attempting to play video: ", error);
+    });
+}
+
+function isVideoPlaying() {
+  var video = document.getElementById('video1');
+  return video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2;
 }
 
 // document.addEventListener('DOMContentLoaded', () => {
