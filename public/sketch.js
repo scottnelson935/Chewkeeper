@@ -68,6 +68,9 @@ let tapirBuff;
 let chinchillaBuff;
 let jaguarBuff;
 
+let buffersLoaded = false;
+let boxesMade = false;
+
 let tigerSound;
 let giraffeSound;
 let opossumSound;
@@ -163,6 +166,297 @@ function preload() {
   rain1.loopEnd = soundDuration;
   rain2.loopEnd = soundDuration;
 
+  // tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.ogg");
+  // giraffeBuff = new Tone.Buffer("sounds/Giraffe.ogg");
+  // opossumBuff = new Tone.Buffer("sounds/Opossum.ogg");
+  // hippoBuff = new Tone.Buffer("sounds/Hippo1.ogg");
+  // macawBuff = new Tone.Buffer("sounds/Macaw.ogg");
+  // siamangBuff = new Tone.Buffer("sounds/Siamang.ogg");
+  // nyalaBuff = new Tone.Buffer("sounds/Nyala.ogg");
+  // bearBuff = new Tone.Buffer("sounds/Bear.ogg");
+  // rhinoBuff = new Tone.Buffer("sounds/BlackRhino2.ogg");
+  // tapirBuff = new Tone.Buffer("sounds/Tapir.ogg");
+  // chinchillaBuff = new Tone.Buffer("sounds/Nutria.ogg");
+  // jaguarBuff = new Tone.Buffer("sounds/Jaguar2.ogg");
+  // console.log("buffers loaded!");
+
+
+  // tigerSound = new Tone.Player(
+  //   tigerBuff
+  // ).toDestination();
+  // giraffeSound = new Tone.Player(
+  //   giraffeBuff
+  // ).toDestination();
+  // opossumSound = new Tone.Player(
+  //   opossumBuff
+  // ).toDestination();
+  // hippoSound = new Tone.Player(
+  //   hippoBuff
+  // ).toDestination();
+  // macawSound = new Tone.Player(
+  //   macawBuff
+  // ).toDestination();
+  // siamangSound = new Tone.Player(
+  //   siamangBuff
+  // ).toDestination();
+  // nyalaSound = new Tone.Player(
+  //   nyalaBuff
+  // ).toDestination();
+  // bearSound = new Tone.Player(
+  //   bearBuff
+  // ).toDestination();
+  // rhinoSound = new Tone.Player(
+  //   rhinoBuff
+  // ).toDestination();
+  // tapirSound = new Tone.Player(
+  //   tapirBuff
+  // ).toDestination();
+  // chinchillaSound = new Tone.Player(
+  //   chinchillaBuff
+  // ).toDestination();
+  // jaguarSound = new Tone.Player(
+  //   jaguarBuff
+  // ).toDestination();
+
+  // tigerImg = loadImage("images/tigerIcon.png");
+  // giraffeImg = loadImage("images/giraffeIcon.png");
+  // opossumImg = loadImage("images/opossumIcon.png");
+  // hippoImg = loadImage("images/hippoIcon.png");
+  // macawImg = loadImage("images/macawIcon.png");
+  // siamangImg = loadImage("images/siamangIcon.png");
+  // nyalaImg = loadImage("images/nyalaIcon.png");
+  // bearImg = loadImage("images/bearIcon.png");
+  // rhinoImg = loadImage("images/rhinoIcon.png");
+  // tapirImg = loadImage("images/tapirIcon.png");
+  // chinchillaImg = loadImage("images/chinchillaIcon.png");
+  // jaguarImg = loadImage("images/jaguarIcon.png");
+
+  // animals = [
+  //   { name: "tiger", img: tigerImg, sound: tigerSound, buffer: tigerBuff },
+  //   { name: "giraffe", img: giraffeImg, sound: giraffeSound, buffer: giraffeBuff },
+  //   { name: "opossum", img: opossumImg, sound: opossumSound, buffer: opossumBuff },
+  //   { name: "hippo", img: hippoImg, sound: hippoSound, buffer: hippoBuff },
+  //   { name: "macaw", img: macawImg, sound: macawSound, buffer: macawBuff },
+  //   { name: "siamang", img: siamangImg, sound: siamangSound, buffer: siamangBuff },
+  //   { name: "nyala", img: nyalaImg, sound: nyalaSound, buffer: nyalaBuff },
+  //   { name: "bear", img: bearImg, sound: bearSound, buffer: bearBuff },
+  //   { name: "rhino", img: rhinoImg, sound: rhinoSound, buffer: rhinoBuff },
+  //   { name: "tapir", img: tapirImg, sound: tapirSound, buffer: tapirBuff },
+  //   { name: "nutria", img: chinchillaImg, sound: chinchillaSound, buffer: chinchillaBuff },
+  //   { name: "jaguar", img: jaguarImg, sound: jaguarSound, buffer: jaguarBuff },
+
+  // ];
+}
+
+let animalWidth, animalHeight;
+
+function setup() {
+  canvasWidth = windowWidth;
+  canvasHeight = windowHeight;
+  let cnv = createCanvas(canvasWidth, canvasHeight);
+  cnv.parent('p5cnv');
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+  centerX = canvasWidth / 2;
+  centerY = canvasHeight / 2;
+
+  // Clear the animalBoxes array to avoid duplicating boxes if setup is called more than once
+  animalBoxes = [];
+
+  
+
+  if (windowWidth < windowHeight) {
+    animalWidth = windowWidth * 0.3;
+    animalHeight = animalWidth;
+  } else if (windowWidth > windowHeight) {
+    animalWidth = windowWidth / 7.5; // 6 animals per row
+    animalHeight = animalWidth; // Two rows
+  }
+
+  // // Loop through each animal and position them
+  // animals.forEach((animal, index) => {
+  //   let x, y;
+  //   if (windowWidth < windowHeight) {
+  //     // Position for two columns of six
+  //     let column = index % 2; // 0 or 1
+  //     let row = Math.floor(index / 2);
+  //     x = column * (windowWidth / 2) + animalWidth / 4 + (windowWidth * 0.17); // Centering adjustment
+  //     y = (row * (windowHeight / 6.5)) + (animalHeight / 6.5) + (windowWidth * 0.17);
+  //   } else {
+  //     // Position for two rows of six
+  //     let row = Math.floor(index / 6); // 0 or 1
+  //     let column = index % 6;
+  //     x = (column * (windowWidth / 6)) + (animalWidth / 6) + (windowWidth * 0.06);
+  //     y = row * (windowHeight / 2) + animalHeight / 4 + (windowWidth * 0.06); // Centering adjustment
+  //   }
+
+  //   // Create a new animalBox at the calculated position
+  //   let newBox = new animalBox(x, y, animalWidth, animalHeight, animal.img, animal.sound, animal.name, animal.buffer);
+  //   animalBoxes.push(newBox); // Add the new animalBox to the array
+  // });
+
+  // bgBuffer = createGraphics(canvasWidth, canvasHeight);
+
+  // drops[0] = new Drop(bgBuffer);
+}
+
+function draw() {
+  //Only display intro text if font is ready
+  if (!fontReady) {
+    return;
+  }
+
+  clear();
+
+  socket.on("firstEmit", () => {
+    if (pieceEnd === false) {
+      //send all audio to a gain node first, and then:
+      Tone.getDestination().volume.rampTo(-Infinity, 20);
+      pieceEnd = true;
+    }
+
+  });
+
+  if (state === 0) {
+    intro();
+  }
+
+  //title state
+  if (state === 1) {
+    title();
+
+
+
+    if (transportStart === false) {
+      Tone.Transport.start();
+      // console.log(rainBuff1.duration);
+      transportStart = true;
+    }
+
+
+  }
+
+  //instructions state
+  if (state === 2) {
+    instructions();
+  }
+
+  //feeding state
+  if (state === 3) {
+    feeding();
+    // push();
+    // translate(0, 0);
+    // textSize(windowWidth * 0.09);
+    // fill("white");
+    // textAlign(RIGHT, BOTTOM);
+    // text("x: " + mouseX, windowWidth, windowHeight - 80);
+    // text("y: " + mouseY, windowWidth, windowHeight);
+    // pop();
+  }
+}
+
+function keyPressed() {
+  if (keyCode === 32) {
+    state += 1;
+  }
+}
+
+function mousePressed() {
+  currentMouseState = true; // Update current mouse state
+
+  // Check if the mouse was not pressed in the previous frame
+  if (!prevMouseState) {
+    const currentTime = millis(); // Get current time
+
+    // Check if the time since the last click is greater than the cooldown period
+    if (currentTime - lastClickTime > clickCooldown) {
+      if (state === 0) {
+        startAudioContext();
+        state = (state + 1) % 4; // This will transition state from 0 to 1
+        if (!isVideoPlaying()) {
+          playVideo(); // Play video only if it's not already playing
+        }
+
+        if (!buffersLoaded) {
+          toneBuffers();
+          buffersLoaded = true;
+        }
+
+        if (!boxesMade) {
+          makeBoxes();
+          boxesMade = true;
+        }
+
+      } else if (state !== 3) {
+        state = (state + 1) % 4; // Cycle through states 1, 2, and avoid resetting video in state 3
+      }
+
+      lastClickTime = currentTime; // Update the last click time
+
+      if (state === 3) {
+        // Handling for the feeding state
+        for (let i = 0; i < animalBoxes.length; i++) {
+          animalBoxes[i].handleClick();
+          if (animalBoxes[i].clicked) {
+            animalBoxes[i].clicked = false;
+            // Logic for when an animal box is clicked
+          }
+        }
+      }
+    }
+  }
+
+  prevMouseState = currentMouseState; // Update previous mouse state
+}
+
+
+function mouseReleased() {
+  currentMouseState = false; // Update current mouse state
+  prevMouseState = currentMouseState; // Update previous mouse state
+}
+
+function startAudioContext() {
+  if (!audioStarted) {
+    setTimeout(() => {
+      Tone.start();
+    }, 50);
+    audioStarted = true;
+    print("Tone started!");
+  }
+}
+
+function windowResized() {
+  // Update the canvas size when the window is resized
+  canvasWidth = windowWidth;
+  canvasHeight = windowHeight;
+  resizeCanvas(canvasWidth, canvasHeight);
+
+  bgBuffer = createGraphics(canvasWidth, canvasHeight);
+
+  drops = [];
+  for (var i = 0; i < 1800; i++) {
+    drops.push(new Drop(bgBuffer)); // Pass the graphics buffer as an argument
+  }
+}
+
+function playVideo() {
+  // This function is responsible for playing the video when called
+  var video = document.getElementById('video1');
+  video.play()
+    .then(() => {
+      // Video playback started successfully
+    })
+    .catch(error => {
+      console.error("Error attempting to play video: ", error);
+    });
+}
+
+function isVideoPlaying() {
+  var video = document.getElementById('video1');
+  return video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2;
+}
+
+function toneBuffers() {
   tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.ogg");
   giraffeBuff = new Tone.Buffer("sounds/Giraffe.ogg");
   opossumBuff = new Tone.Buffer("sounds/Opossum.ogg");
@@ -175,6 +469,7 @@ function preload() {
   tapirBuff = new Tone.Buffer("sounds/Tapir.ogg");
   chinchillaBuff = new Tone.Buffer("sounds/Nutria.ogg");
   jaguarBuff = new Tone.Buffer("sounds/Jaguar2.ogg");
+  console.log("buffers loaded!");
 
   tigerSound = new Tone.Player(
     tigerBuff
@@ -243,31 +538,7 @@ function preload() {
   ];
 }
 
-let animalWidth, animalHeight;
-
-function setup() {
-  canvasWidth = windowWidth;
-  canvasHeight = windowHeight;
-  let cnv = createCanvas(canvasWidth, canvasHeight);
-  cnv.parent('p5cnv');
-  rectMode(CENTER);
-  textAlign(CENTER, CENTER);
-  centerX = canvasWidth / 2;
-  centerY = canvasHeight / 2;
-
-  // Clear the animalBoxes array to avoid duplicating boxes if setup is called more than once
-  animalBoxes = [];
-
-  
-
-  if (windowWidth < windowHeight) {
-    animalWidth = windowWidth * 0.3;
-    animalHeight = animalWidth;
-  } else if (windowWidth > windowHeight) {
-    animalWidth = windowWidth / 7.5; // 6 animals per row
-    animalHeight = animalWidth; // Two rows
-  }
-
+function makeBoxes() {
   // Loop through each animal and position them
   animals.forEach((animal, index) => {
     let x, y;
@@ -289,153 +560,6 @@ function setup() {
     let newBox = new animalBox(x, y, animalWidth, animalHeight, animal.img, animal.sound, animal.name, animal.buffer);
     animalBoxes.push(newBox); // Add the new animalBox to the array
   });
-
-  bgBuffer = createGraphics(canvasWidth, canvasHeight);
-
-  drops[0] = new Drop(bgBuffer);
-}
-
-function draw() {
-  //Only display intro text if font is ready
-  if (!fontReady) {
-    return;
-  }
-
-  clear();
-
-  socket.on("firstEmit", () => {
-    if (pieceEnd === false) {
-      //send all audio to a gain node first, and then:
-      Tone.getDestination().volume.rampTo(-Infinity, 20);
-      pieceEnd = true;
-    }
-
-  });
-
-  if (state === 0) {
-    intro();
-  }
-
-  //title state
-  if (state === 1) {
-    title();
-
-
-
-    if (transportStart === false) {
-      Tone.Transport.start();
-      // console.log(rainBuff1.duration);
-      transportStart = true;
-    }
-  }
-
-  //instructions state
-  if (state === 2) {
-    instructions();
-  }
-
-  //feeding state
-  if (state === 3) {
-    feeding();
-    // push();
-    // translate(0, 0);
-    // textSize(windowWidth * 0.09);
-    // fill("white");
-    // textAlign(RIGHT, BOTTOM);
-    // text("x: " + mouseX, windowWidth, windowHeight - 80);
-    // text("y: " + mouseY, windowWidth, windowHeight);
-    // pop();
-  }
-}
-
-function keyPressed() {
-  if (keyCode === 32) {
-    state += 1;
-  }
-}
-
-function mousePressed() {
-  currentMouseState = true; // Update current mouse state
-
-  // Check if the mouse was not pressed in the previous frame
-  if (!prevMouseState) {
-    const currentTime = millis(); // Get current time
-
-    // Check if the time since the last click is greater than the cooldown period
-    if (currentTime - lastClickTime > clickCooldown) {
-      if (state === 0) {
-        startAudioContext();
-        state = (state + 1) % 4; // This will transition state from 0 to 1
-        if (!isVideoPlaying()) {
-          playVideo(); // Play video only if it's not already playing
-        }
-      } else if (state !== 3) {
-        state = (state + 1) % 4; // Cycle through states 1, 2, and avoid resetting video in state 3
-      }
-
-      lastClickTime = currentTime; // Update the last click time
-
-      if (state === 3) {
-        // Handling for the feeding state
-        for (let i = 0; i < animalBoxes.length; i++) {
-          animalBoxes[i].handleClick();
-          if (animalBoxes[i].clicked) {
-            animalBoxes[i].clicked = false;
-            // Logic for when an animal box is clicked
-          }
-        }
-      }
-    }
-  }
-
-  prevMouseState = currentMouseState; // Update previous mouse state
-}
-
-
-function mouseReleased() {
-  currentMouseState = false; // Update current mouse state
-  prevMouseState = currentMouseState; // Update previous mouse state
-}
-
-function startAudioContext() {
-  if (!audioStarted) {
-    setTimeout(() => {
-      Tone.start();
-    }, 50);
-    audioStarted = true;
-    print("Tone started!");
-  }
-}
-
-function windowResized() {
-  // Update the canvas size when the window is resized
-  canvasWidth = windowWidth;
-  canvasHeight = windowHeight;
-  resizeCanvas(canvasWidth, canvasHeight);
-
-  bgBuffer = createGraphics(canvasWidth, canvasHeight);
-
-  drops = [];
-  for (var i = 0; i < 1800; i++) {
-    drops.push(new Drop(bgBuffer)); // Pass the graphics buffer as an argument
-  }
-}
-
-function playVideo() {
-  // This function is responsible for playing the video when called
-  var video = document.getElementById('video1');
-  video.play()
-    .then(() => {
-      // Video playback started successfully
-    })
-    .catch(error => {
-      console.error("Error attempting to play video: ", error);
-    });
-}
-
-function isVideoPlaying() {
-  var video = document.getElementById('video1');
-  return video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2;
 }
 
 // document.addEventListener('DOMContentLoaded', () => {
