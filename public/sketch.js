@@ -457,7 +457,7 @@ function isVideoPlaying() {
 }
 
 function toneBuffers() {
-  tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.ogg");
+  tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.mp3");
   giraffeBuff = new Tone.Buffer("sounds/Giraffe.ogg");
   opossumBuff = new Tone.Buffer("sounds/Opossum.ogg");
   hippoBuff = new Tone.Buffer("sounds/Hippo1.ogg");
