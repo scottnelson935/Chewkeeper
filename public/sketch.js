@@ -148,8 +148,8 @@ function preload() {
     Q: 1 // Quality factor of the filter (dimensionless)
   }).toDestination();
 
-  rainBuff1 = new Tone.Buffer("sounds/sample_rain.ogg");
-  rainBuff2 = new Tone.Buffer("sounds/sample_rain.ogg");
+  rainBuff1 = new Tone.Buffer("sounds/sample_rain.mp3");
+  rainBuff2 = new Tone.Buffer("sounds/sample_rain.mp3");
 
   rain1 = new Tone.Player(rainBuff1, () => {
     rain1.sync().start(0);
@@ -458,17 +458,17 @@ function isVideoPlaying() {
 
 function toneBuffers() {
   tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.mp3");
-  giraffeBuff = new Tone.Buffer("sounds/Giraffe.ogg");
-  opossumBuff = new Tone.Buffer("sounds/Opossum.ogg");
-  hippoBuff = new Tone.Buffer("sounds/Hippo1.ogg");
-  macawBuff = new Tone.Buffer("sounds/Macaw.ogg");
-  siamangBuff = new Tone.Buffer("sounds/Siamang.ogg");
-  nyalaBuff = new Tone.Buffer("sounds/Nyala.ogg");
-  bearBuff = new Tone.Buffer("sounds/Bear.ogg");
-  rhinoBuff = new Tone.Buffer("sounds/BlackRhino2.ogg");
-  tapirBuff = new Tone.Buffer("sounds/Tapir.ogg");
-  chinchillaBuff = new Tone.Buffer("sounds/Nutria.ogg");
-  jaguarBuff = new Tone.Buffer("sounds/Jaguar2.ogg");
+  giraffeBuff = new Tone.Buffer("sounds/Giraffe.mp3");
+  opossumBuff = new Tone.Buffer("sounds/Opossum.mp3");
+  hippoBuff = new Tone.Buffer("sounds/Hippo1.mp3");
+  macawBuff = new Tone.Buffer("sounds/Macaw.mp3");
+  siamangBuff = new Tone.Buffer("sounds/Siamang.mp3");
+  nyalaBuff = new Tone.Buffer("sounds/Nyala.mp3");
+  bearBuff = new Tone.Buffer("sounds/Bear.mp3");
+  rhinoBuff = new Tone.Buffer("sounds/BlackRhino2.mp3");
+  tapirBuff = new Tone.Buffer("sounds/Tapir.mp3");
+  chinchillaBuff = new Tone.Buffer("sounds/Nutria.mp3");
+  jaguarBuff = new Tone.Buffer("sounds/Jaguar2.mp3");
   console.log("buffers loaded!");
 
   tigerSound = new Tone.Player(
