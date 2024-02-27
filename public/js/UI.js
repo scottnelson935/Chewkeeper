@@ -137,12 +137,12 @@ class animalBox {
   display() {
     // translate(windowWidth / 2, windowHeight / 2);
     if (this.sound.state === "started") {
-      fill(50, 180, 100, 50);
+      // fill(50, 180, 100, 50);
       // print("green");
       push();
-      fill("black");
-      textSize(windowWidth * 0.03);
-      text(capitalizeFirstLetter(this.name) + " is feeding", this.x, this.y + ((this.height / 3) * 1.2));
+      // fill("black");
+      // textSize(windowWidth * 0.03);
+      // text(capitalizeFirstLetter(this.name) + " is feeding", this.x, this.y + ((this.height / 3) * 1.2));
       pop();
     } else {
       fill(60, 70, 80, tBoxAlpha);
@@ -160,15 +160,22 @@ class animalBox {
     if (this.isInside(mouseX, mouseY) && !this.clicked && canClick) {
       // Check if the mouse is inside the object
       this.sound.start(); // Play the associated sound
-      console.log(this.name + " buffer duraction: " + this.buffer.duration);
+      console.log(this.name + " buffer duration: " + this.buffer.duration);
       this.clicked = true; // Set the clicked flag to true
       canClick = false; // Prevent all boxes from being clicked
 
       // console.log(this.name + " clicked!");
 
+      // Set global variables for overlay
+      isFeeding = true;
+      feedingAnimalName = this.name;
+      feedingDuration = this.buffer.duration;
+      feedingStartTime = millis();
+
       setTimeout(() => {
         this.clicked = false; // Reset this box's clicked state
         canClick = true; // Allow all boxes to be clicked again
+        isFeeding = false; // Hide overlay once sound ends
       }, this.buffer.duration * 1000); // Convert seconds to milliseconds
 
     }
@@ -177,4 +184,38 @@ class animalBox {
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function drawFeedingOverlay() {
+  if (!isFeeding) return;
+
+  let currentTime = millis();
+  feedingProgress = (currentTime - feedingStartTime) / (feedingDuration * 1000);
+
+  push();
+  fill(0, 0, 0, 200); // Black background
+  rectMode(CORNER);
+  rect(0, 0, windowWidth, windowHeight);
+
+  textSize(windowWidth * 0.09);
+  fill("white");
+  textFont("Oswald");
+  textSize(windowWidth * 0.09);
+  textAlign(CENTER, CENTER);
+  if (windowWidth < windowHeight) {
+    text(capitalizeFirstLetter(feedingAnimalName) + " is feeding", windowWidth / 2, windowHeight / 2.5);
+  } else if (windowWidth > windowHeight) {
+    text(capitalizeFirstLetter(feedingAnimalName) + " is feeding", windowWidth / 2, windowHeight / 2);
+  }
+
+  // Draw progress bar
+  let progressBarWidth = width * 0.8;
+  let progressBarHeight = 20;
+  let progress = progressBarWidth * feedingProgress;
+  fill(20, 20, 20);
+  rect(width * 0.1, height / 2 + 50, progressBarWidth, progressBarHeight)
+  noStroke();
+  fill(255, 255, 255); // Red progress bar
+  rect(width * 0.1, height / 2 + 50, progress, progressBarHeight);
+  pop();
 }

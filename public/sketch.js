@@ -124,6 +124,12 @@ let canClick = true;
 
 let fontReady = false;
 
+let isFeeding = false;
+let feedingAnimalName = '';
+let feedingProgress = 0;
+let feedingDuration = 0; // Duration of the current feeding sound
+let feedingStartTime = 0;
+
 function preload() {
 
   WebFont.load({
@@ -344,6 +350,7 @@ function draw() {
   //feeding state
   if (state === 3) {
     feeding();
+    drawFeedingOverlay();
     // push();
     // translate(0, 0);
     // textSize(windowWidth * 0.09);
@@ -371,7 +378,13 @@ function mousePressed() {
     // Check if the time since the last click is greater than the cooldown period
     if (currentTime - lastClickTime > clickCooldown) {
       if (state === 0) {
-        startAudioContext();
+        if (!audioStarted) {
+          setTimeout(() => {
+            Tone.start();
+          }, 300);
+          audioStarted = true;
+          print("Tone started!");
+        }
         state = (state + 1) % 4; // This will transition state from 0 to 1
         if (!isVideoPlaying()) {
           playVideo(); // Play video only if it's not already playing
