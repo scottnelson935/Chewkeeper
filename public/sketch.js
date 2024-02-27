@@ -166,13 +166,13 @@ function preload() {
   tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.ogg");
   giraffeBuff = new Tone.Buffer("sounds/Giraffe.ogg");
   opossumBuff = new Tone.Buffer("sounds/Opossum.ogg");
-  hippoBuff = new Tone.Buffer("sounds/Bear.ogg");
-  macawBuff = new Tone.Buffer("sounds/Bear.ogg");
-  siamangBuff = new Tone.Buffer("sounds/Bear.ogg");
-  nyalaBuff = new Tone.Buffer("sounds/Bear.ogg");
+  hippoBuff = new Tone.Buffer("sounds/Hippo1.ogg");
+  macawBuff = new Tone.Buffer("sounds/Macaw.ogg");
+  siamangBuff = new Tone.Buffer("sounds/Siamang.ogg");
+  nyalaBuff = new Tone.Buffer("sounds/Nyala.ogg");
   bearBuff = new Tone.Buffer("sounds/Bear.ogg");
-  rhinoBuff = new Tone.Buffer("sounds/Bear.ogg");
-  tapirBuff = new Tone.Buffer("sounds/Bear.ogg");
+  rhinoBuff = new Tone.Buffer("sounds/BlackRhino2.ogg");
+  tapirBuff = new Tone.Buffer("sounds/Tapir.ogg");
   chinchillaBuff = new Tone.Buffer("sounds/Nutria.ogg");
   jaguarBuff = new Tone.Buffer("sounds/Jaguar2.ogg");
 
