@@ -7,6 +7,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+let pieceEnd = false;
+
 app.use(express.static('public'));
 
 server.listen(port, () => {
@@ -15,12 +17,16 @@ server.listen(port, () => {
 
 io.on('connection', (socket) => {
 
+    // Send the current state immediately upon connection
+    socket.emit('firstEmit', pieceEnd);
+
+    console.log("A user connected");
+
     socket.on('firstMessage', (data) => {
         console.log(data);
-        io.emit('firstEmit', data); //2nd arg could be true
+        if (data === true) {
+            pieceEnd = true; // Update the global state
+        }
+        io.emit('firstEmit', pieceEnd); //2nd arg could be true
     })
-
-
-
-
 });

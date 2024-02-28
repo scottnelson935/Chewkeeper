@@ -137,7 +137,7 @@ class animalBox {
   display() {
     // translate(windowWidth / 2, windowHeight / 2);
     if (this.sound.state === "started") {
-      // fill(50, 180, 100, 50);
+      fill(50, 180, 100, 50);
       // print("green");
       push();
       // fill("black");
@@ -150,7 +150,7 @@ class animalBox {
     push();
     imageMode(CENTER);
     rectMode(CENTER);
-    rect(this.x, this.y, this.width, this.height);
+    rect(this.x, this.y, this.width, this.height * 0.75);
     image(this.image, this.x, this.y, this.width / 1.5, this.height / 1.5);
     pop();
   }

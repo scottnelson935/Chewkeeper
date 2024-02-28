@@ -1,15 +1,9 @@
-// Drops code by Daniel Shiffman
-// Modified by Scott Nelson
-
-//store sounds in a buffer in Tone and set the length (using setTimeout)
+// Chewkeeper by Scott Nelson © February 2024
 
 let socketName = 'default';
 let socket = io();
 
-// let timeToEnd1;
-// let timeToEnd2;
-
-// let gainNode
+let animalBoxesInteractable = false;
 
 let clouds = [];
 let cloudA = [];
@@ -130,6 +124,8 @@ let feedingProgress = 0;
 let feedingDuration = 0; // Duration of the current feeding sound
 let feedingStartTime = 0;
 
+let showEndOverlay = false;
+
 function preload() {
 
   WebFont.load({
@@ -171,87 +167,6 @@ function preload() {
 
   rain1.loopEnd = soundDuration;
   rain2.loopEnd = soundDuration;
-
-  // tigerBuff = new Tone.Buffer("sounds/MalayanTiger1.ogg");
-  // giraffeBuff = new Tone.Buffer("sounds/Giraffe.ogg");
-  // opossumBuff = new Tone.Buffer("sounds/Opossum.ogg");
-  // hippoBuff = new Tone.Buffer("sounds/Hippo1.ogg");
-  // macawBuff = new Tone.Buffer("sounds/Macaw.ogg");
-  // siamangBuff = new Tone.Buffer("sounds/Siamang.ogg");
-  // nyalaBuff = new Tone.Buffer("sounds/Nyala.ogg");
-  // bearBuff = new Tone.Buffer("sounds/Bear.ogg");
-  // rhinoBuff = new Tone.Buffer("sounds/BlackRhino2.ogg");
-  // tapirBuff = new Tone.Buffer("sounds/Tapir.ogg");
-  // chinchillaBuff = new Tone.Buffer("sounds/Nutria.ogg");
-  // jaguarBuff = new Tone.Buffer("sounds/Jaguar2.ogg");
-  // console.log("buffers loaded!");
-
-
-  // tigerSound = new Tone.Player(
-  //   tigerBuff
-  // ).toDestination();
-  // giraffeSound = new Tone.Player(
-  //   giraffeBuff
-  // ).toDestination();
-  // opossumSound = new Tone.Player(
-  //   opossumBuff
-  // ).toDestination();
-  // hippoSound = new Tone.Player(
-  //   hippoBuff
-  // ).toDestination();
-  // macawSound = new Tone.Player(
-  //   macawBuff
-  // ).toDestination();
-  // siamangSound = new Tone.Player(
-  //   siamangBuff
-  // ).toDestination();
-  // nyalaSound = new Tone.Player(
-  //   nyalaBuff
-  // ).toDestination();
-  // bearSound = new Tone.Player(
-  //   bearBuff
-  // ).toDestination();
-  // rhinoSound = new Tone.Player(
-  //   rhinoBuff
-  // ).toDestination();
-  // tapirSound = new Tone.Player(
-  //   tapirBuff
-  // ).toDestination();
-  // chinchillaSound = new Tone.Player(
-  //   chinchillaBuff
-  // ).toDestination();
-  // jaguarSound = new Tone.Player(
-  //   jaguarBuff
-  // ).toDestination();
-
-  // tigerImg = loadImage("images/tigerIcon.png");
-  // giraffeImg = loadImage("images/giraffeIcon.png");
-  // opossumImg = loadImage("images/opossumIcon.png");
-  // hippoImg = loadImage("images/hippoIcon.png");
-  // macawImg = loadImage("images/macawIcon.png");
-  // siamangImg = loadImage("images/siamangIcon.png");
-  // nyalaImg = loadImage("images/nyalaIcon.png");
-  // bearImg = loadImage("images/bearIcon.png");
-  // rhinoImg = loadImage("images/rhinoIcon.png");
-  // tapirImg = loadImage("images/tapirIcon.png");
-  // chinchillaImg = loadImage("images/chinchillaIcon.png");
-  // jaguarImg = loadImage("images/jaguarIcon.png");
-
-  // animals = [
-  //   { name: "tiger", img: tigerImg, sound: tigerSound, buffer: tigerBuff },
-  //   { name: "giraffe", img: giraffeImg, sound: giraffeSound, buffer: giraffeBuff },
-  //   { name: "opossum", img: opossumImg, sound: opossumSound, buffer: opossumBuff },
-  //   { name: "hippo", img: hippoImg, sound: hippoSound, buffer: hippoBuff },
-  //   { name: "macaw", img: macawImg, sound: macawSound, buffer: macawBuff },
-  //   { name: "siamang", img: siamangImg, sound: siamangSound, buffer: siamangBuff },
-  //   { name: "nyala", img: nyalaImg, sound: nyalaSound, buffer: nyalaBuff },
-  //   { name: "bear", img: bearImg, sound: bearSound, buffer: bearBuff },
-  //   { name: "rhino", img: rhinoImg, sound: rhinoSound, buffer: rhinoBuff },
-  //   { name: "tapir", img: tapirImg, sound: tapirSound, buffer: tapirBuff },
-  //   { name: "nutria", img: chinchillaImg, sound: chinchillaSound, buffer: chinchillaBuff },
-  //   { name: "jaguar", img: jaguarImg, sound: jaguarSound, buffer: jaguarBuff },
-
-  // ];
 }
 
 let animalWidth, animalHeight;
@@ -269,8 +184,6 @@ function setup() {
   // Clear the animalBoxes array to avoid duplicating boxes if setup is called more than once
   animalBoxes = [];
 
-  
-
   if (windowWidth < windowHeight) {
     animalWidth = windowWidth * 0.3;
     animalHeight = animalWidth;
@@ -279,31 +192,14 @@ function setup() {
     animalHeight = animalWidth; // Two rows
   }
 
-  // // Loop through each animal and position them
-  // animals.forEach((animal, index) => {
-  //   let x, y;
-  //   if (windowWidth < windowHeight) {
-  //     // Position for two columns of six
-  //     let column = index % 2; // 0 or 1
-  //     let row = Math.floor(index / 2);
-  //     x = column * (windowWidth / 2) + animalWidth / 4 + (windowWidth * 0.17); // Centering adjustment
-  //     y = (row * (windowHeight / 6.5)) + (animalHeight / 6.5) + (windowWidth * 0.17);
-  //   } else {
-  //     // Position for two rows of six
-  //     let row = Math.floor(index / 6); // 0 or 1
-  //     let column = index % 6;
-  //     x = (column * (windowWidth / 6)) + (animalWidth / 6) + (windowWidth * 0.06);
-  //     y = row * (windowHeight / 2) + animalHeight / 4 + (windowWidth * 0.06); // Centering adjustment
-  //   }
-
-  //   // Create a new animalBox at the calculated position
-  //   let newBox = new animalBox(x, y, animalWidth, animalHeight, animal.img, animal.sound, animal.name, animal.buffer);
-  //   animalBoxes.push(newBox); // Add the new animalBox to the array
-  // });
-
-  // bgBuffer = createGraphics(canvasWidth, canvasHeight);
-
-  // drops[0] = new Drop(bgBuffer);
+  socket.on("firstEmit", () => {
+    if (!pieceEnd) {
+      //send all audio to a gain node first, and then:
+      pieceEnd = true;
+      showEndOverlay = true;
+      Tone.getDestination().volume.rampTo(-Infinity, 20);
+    }
+  });
 }
 
 function draw() {
@@ -314,14 +210,7 @@ function draw() {
 
   clear();
 
-  socket.on("firstEmit", () => {
-    if (pieceEnd === false) {
-      //send all audio to a gain node first, and then:
-      Tone.getDestination().volume.rampTo(-Infinity, 20);
-      pieceEnd = true;
-    }
 
-  });
 
   if (state === 0) {
     intro();
@@ -360,6 +249,9 @@ function draw() {
     // text("y: " + mouseY, windowWidth, windowHeight);
     // pop();
   }
+  if (showEndOverlay) {
+    drawEndOverlay();
+  }
 }
 
 function keyPressed() {
@@ -369,6 +261,10 @@ function keyPressed() {
 }
 
 function mousePressed() {
+  if (showEndOverlay) {
+    return;
+  }
+
   currentMouseState = true; // Update current mouse state
 
   // Check if the mouse was not pressed in the previous frame
@@ -408,13 +304,20 @@ function mousePressed() {
 
       if (state === 3) {
         // Handling for the feeding state
-        for (let i = 0; i < animalBoxes.length; i++) {
-          animalBoxes[i].handleClick();
-          if (animalBoxes[i].clicked) {
-            animalBoxes[i].clicked = false;
-            // Logic for when an animal box is clicked
+        setTimeout(() => {
+          animalBoxesInteractable = true;
+          // print("ABI true");
+        }, 200);
+        if (animalBoxesInteractable) {
+          for (let i = 0; i < animalBoxes.length; i++) {
+            animalBoxes[i].handleClick();
+            if (animalBoxes[i].clicked) {
+              animalBoxes[i].clicked = false;
+              // Logic for when an animal box is clicked
+            }
           }
         }
+
       }
     }
   }
@@ -573,6 +476,23 @@ function makeBoxes() {
     let newBox = new animalBox(x, y, animalWidth, animalHeight, animal.img, animal.sound, animal.name, animal.buffer);
     animalBoxes.push(newBox); // Add the new animalBox to the array
   });
+}
+
+function drawEndOverlay() {
+  push(); // Save current drawing settings
+  // fill(0); // Black background
+  background(0); // Cover the entire canvas
+  textFont("Oswald");
+  textSize(windowWidth * 0.09); // Adjust text size as needed
+  fill(255); // White text
+  textAlign(CENTER, CENTER);
+  if (windowWidth < windowHeight) {
+    text("The animals are fed.\nThank you for participating.", width / 2, height / 2);
+  } else if (windowWidth > windowHeight) {
+    text("The animals are fed.\nThank you for participating.", width / 2, height / 2);
+  }
+
+  pop(); // Restore previous drawing settings
 }
 
 // document.addEventListener('DOMContentLoaded', () => {

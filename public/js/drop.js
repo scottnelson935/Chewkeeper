@@ -1,4 +1,3 @@
-// Daniel Shiffman
 // Modified by Scott Nelson
 
 function Drop(buffer) {
