@@ -4,6 +4,7 @@ let socketName = 'default';
 let socket = io();
 
 let animalBoxesInteractable = false;
+let surveyButton;
 
 let clouds = [];
 let cloudA = [];
@@ -167,6 +168,7 @@ function preload() {
 
   rain1.loopEnd = soundDuration;
   rain2.loopEnd = soundDuration;
+  Tone.getDestination().volume.value = -6;
 }
 
 let animalWidth, animalHeight;
@@ -203,6 +205,7 @@ function setup() {
 }
 
 function draw() {
+  // print(Tone.getDestination().volume);
   //Only display intro text if font is ready
   if (!fontReady) {
     return;
@@ -255,13 +258,23 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === 32) {
+  print(key);
+  if (keyCode === 32) { //spacebar
     state += 1;
   }
+
+  if (keyCode === 80) { //letter "P" on keyboard
+    pieceEnd = true;
+    showEndOverlay = true;
+    // print("`P` pressed - trigger piece end");
+    Tone.getDestination().volume.rampTo(-Infinity, 20);
+  }
+
 }
 
 function mousePressed() {
   if (showEndOverlay) {
+    surveyButton.clicked(mouseX, mouseY);
     return;
   }
 
@@ -390,39 +403,51 @@ function toneBuffers() {
   tigerSound = new Tone.Player(
     tigerBuff
   ).toDestination();
+  tigerSound.volume.value = -3;
   giraffeSound = new Tone.Player(
     giraffeBuff
   ).toDestination();
+  giraffeSound.volume.value = -3;
   opossumSound = new Tone.Player(
     opossumBuff
   ).toDestination();
+  opossumSound.volume.value = -3;
   hippoSound = new Tone.Player(
     hippoBuff
   ).toDestination();
+  hippoSound.volume.value = -3;
   macawSound = new Tone.Player(
     macawBuff
   ).toDestination();
+  macawSound.volume.value = -3;
   siamangSound = new Tone.Player(
     siamangBuff
   ).toDestination();
+  siamangSound.volume.value = -3;
   nyalaSound = new Tone.Player(
     nyalaBuff
   ).toDestination();
+  nyalaSound.volume.value = -3;
   bearSound = new Tone.Player(
     bearBuff
   ).toDestination();
+  bearSound.volume.value = -3;
   rhinoSound = new Tone.Player(
     rhinoBuff
   ).toDestination();
+  rhinoSound.volume.value = -3;
   tapirSound = new Tone.Player(
     tapirBuff
   ).toDestination();
+  tapirSound.volume.value = -3;
   chinchillaSound = new Tone.Player(
     chinchillaBuff
   ).toDestination();
+  chinchillaSound.volume.value = -3;
   jaguarSound = new Tone.Player(
     jaguarBuff
   ).toDestination();
+  jaguarSound.volume.value = -3;
 
   tigerImg = loadImage("images/tigerIcon.png");
   giraffeImg = loadImage("images/giraffeIcon.png");
@@ -487,13 +512,87 @@ function drawEndOverlay() {
   fill(255); // White text
   textAlign(CENTER, CENTER);
   if (windowWidth < windowHeight) {
-    text("The animals are fed.\nThank you for participating.", width / 2, height / 2);
+    text("The animals are fed.\nThank you for participating.", width / 2, height / 2.5);
   } else if (windowWidth > windowHeight) {
-    text("The animals are fed.\nThank you for participating.", width / 2, height / 2);
+    textSize(windowWidth * 0.05);
+    text("The animals are fed.\nThank you for participating.", width / 2, height / 2.5);
   }
+  let sbutton = false;
+  if (!sbutton) {
+    if (windowWidth < windowHeight) {
+      surveyButton = new CustomButton("If you are willing\nto participate in a survey for\nScott Nelson's dissertation,\nPLEASE CLICK HERE", windowWidth / 2, windowHeight - (windowWidth * 0.22), windowWidth * 0.66, windowWidth * 0.33, windowWidth * 0.06, 'https://lsu.qualtrics.com/jfe/form/SV_eqUCqNZm8hUgtBc');
+    } else if (windowWidth > windowHeight) {
+      surveyButton = new CustomButton("If you are willing\nto participate in a survey for\nScott Nelson's dissertation,\nPLEASE CLICK HERE", windowWidth / 2, windowHeight - (windowWidth * 0.1), windowWidth * 0.3, windowWidth * 0.12, windowWidth * 0.022, 'https://lsu.qualtrics.com/jfe/form/SV_eqUCqNZm8hUgtBc');
+      // print("button!");
+    }
+    sbutton = true;
+  }
+  surveyButton.draw();
+
+  // let sbutton = false;
+  // if (!sbutton) {
+  //   let surveyButton = createButton("If you are willing<br>to participate in a study for<br>Scott Nelson's dissertation,<br>please click here");
+  //   surveyButton.html("If you are willing<br>to participate in a study for<br>Scott Nelson's dissertation,<br>please click here", false);
+
+  //   surveyButton.style("background-color: dimgrey; color: white; text-font: Oswald");
+  //   surveyButton.position(0, 0);
+  //   // surveyButton.elt.onload = adjustButtonPosition
+  //   // setTimeout(adjustButtonPosition, 100);
+  //   surveyButton.mousePressed(openSurveyLink);
+  //   sbutton = true;
+  // }
 
   pop(); // Restore previous drawing settings
 }
+
+class CustomButton {
+  constructor(label, x, y, w, h, tSize, link) {
+    this.label = label;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.tSize = tSize;
+    this.link = link;
+  }
+
+  draw() {
+    rectMode(CENTER);
+    textAlign(CENTER, CENTER);
+    fill("dimgrey");
+    rect(this.x, this.y, this.w, this.h);
+    push();
+    fill("gainsboro");
+    textSize(this.tSize);
+    text(this.label, this.x, this.y);
+    pop();
+  }
+
+  clicked(mx, my) {
+    // Check if the mouse is inside the rectangle
+    if (mx > this.x - this.w / 2 && mx < this.x + this.w / 2 &&
+      my > this.y - this.h / 2 && my < this.y + this.h / 2) {
+      window.open(this.link, '_blank');
+    }
+  }
+}
+
+// function openSurveyLink() {
+//   window.open('https://lsu.qualtrics.com/jfe/form/SV_eqUCqNZm8hUgtBc', '_blank');
+// }
+
+// function adjustButtonPosition() {
+//   // Get the actual width of the button
+//   let buttonWidth = button.elt.offsetWidth;
+//   let buttonHeight = button.elt.offsetHeight;
+
+//   // Calculate the position to center the button
+//   let x = (windowWidth - buttonWidth) / 2;
+//   let y = (windowHeight - buttonHeight) / 2;
+
+//   // Reposition the button
+//   button.position(x, y);
+// }
 
 // document.addEventListener('DOMContentLoaded', () => {
 //   const video1 = document.getElementById('video1');

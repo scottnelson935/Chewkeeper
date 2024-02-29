@@ -205,7 +205,7 @@ function drawFeedingOverlay() {
   if (windowWidth < windowHeight) {
     text(capitalizeFirstLetter(feedingAnimalName) + " is feeding", windowWidth / 2, windowHeight / 2.5);
   } else if (windowWidth > windowHeight) {
-    text(capitalizeFirstLetter(feedingAnimalName) + " is feeding", windowWidth / 2, windowHeight / 2);
+    text(capitalizeFirstLetter(feedingAnimalName) + " is feeding", windowWidth / 2, windowHeight / 2.3);
   }
 
   // Draw progress bar
