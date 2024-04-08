@@ -194,13 +194,14 @@ function setup() {
     animalHeight = animalWidth; // Two rows
   }
 
-  socket.on("firstEmit", () => {
-    if (!pieceEnd) {
-      //send all audio to a gain node first, and then:
-      pieceEnd = true;
-      showEndOverlay = true;
-      Tone.getDestination().volume.rampTo(-Infinity, 20);
-    }
+  socket.on("firstEmit", (pieceEnding) => {
+    endPiece(pieceEnding);
+    console.log("firstEmit", pieceEnding);
+  });
+  
+  socket.on("togglePieceActive", (pieceEnding) => {
+    endPiece(pieceEnding);
+    console.log("togglePieceActive", pieceEnding);
   });
 }
 
@@ -293,6 +294,7 @@ function mousePressed() {
           }, 300);
           audioStarted = true;
           print("Tone started!");
+          socket.emit('endCheck', true);
         }
         state = (state + 1) % 4; // This will transition state from 0 to 1
         if (!isVideoPlaying()) {
@@ -574,6 +576,19 @@ class CustomButton {
       my > this.y - this.h / 2 && my < this.y + this.h / 2) {
       window.open(this.link, '_blank');
     }
+  }
+}
+
+function endPiece(pieceEnding) {
+  if (pieceEnding) {
+    //send all audio to a gain node first, and then:
+    pieceEnd = true;
+    showEndOverlay = true;
+    Tone.getDestination().volume.rampTo(-Infinity, 20);
+  } else {
+    pieceEnd = false;
+    showEndOverlay = false;
+    Tone.getDestination().volume.rampTo(-6, 20);
   }
 }
 

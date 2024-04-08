@@ -1,0 +1,18 @@
+<script src="/socket.io/socket.io.js"></script>
+
+<button onclick="endPiece()">Piece End</button>
+<button onclick="resetPiece()">Reset Piece</button>
+<script>
+
+    let socketName = 'default';
+    let socket = io();
+
+    function endPiece() {
+        socket.emit('pieceEnding', true);
+    }
+
+    function resetPiece() {
+        socket.emit('pieceEnding', false);
+    }
+</script>
+
