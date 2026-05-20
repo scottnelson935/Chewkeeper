@@ -266,7 +266,7 @@ function keyPressed() {
 
   if (keyCode === 80) { //letter "P" on keyboard
     pieceEnd = true;
-    showEndOverlay = true;
+    showEndOverlay = false;
     // print("`P` pressed - trigger piece end");
     Tone.getDestination().volume.rampTo(-Infinity, 20);
   }
