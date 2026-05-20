@@ -198,7 +198,7 @@ function setup() {
     endPiece(pieceEnding);
     console.log("firstEmit", pieceEnding);
   });
-  
+
   socket.on("togglePieceActive", (pieceEnding) => {
     endPiece(pieceEnding);
     console.log("togglePieceActive", pieceEnding);
@@ -266,7 +266,7 @@ function keyPressed() {
 
   if (keyCode === 80) { //letter "P" on keyboard
     pieceEnd = true;
-    showEndOverlay = false;
+    showEndOverlay = true;
     // print("`P` pressed - trigger piece end");
     Tone.getDestination().volume.rampTo(-Infinity, 20);
   }
@@ -521,15 +521,15 @@ function drawEndOverlay() {
   }
   let sbutton = false;
   if (!sbutton) {
-    if (windowWidth < windowHeight) {
-      surveyButton = new CustomButton("If you are willing\nto participate in a survey for\nScott Nelson's dissertation,\nPLEASE CLICK HERE", windowWidth / 2, windowHeight - (windowWidth * 0.22), windowWidth * 0.66, windowWidth * 0.33, windowWidth * 0.06, 'https://lsu.qualtrics.com/jfe/form/SV_eqUCqNZm8hUgtBc');
-    } else if (windowWidth > windowHeight) {
-      surveyButton = new CustomButton("If you are willing\nto participate in a survey for\nScott Nelson's dissertation,\nPLEASE CLICK HERE", windowWidth / 2, windowHeight - (windowWidth * 0.1), windowWidth * 0.3, windowWidth * 0.12, windowWidth * 0.022, 'https://lsu.qualtrics.com/jfe/form/SV_eqUCqNZm8hUgtBc');
-      // print("button!");
-    }
-    sbutton = true;
+    // if (windowWidth < windowHeight) {
+    //   surveyButton = new CustomButton("If you are willing\nto participate in a survey for\nScott Nelson's dissertation,\nPLEASE CLICK HERE", windowWidth / 2, windowHeight - (windowWidth * 0.22), windowWidth * 0.66, windowWidth * 0.33, windowWidth * 0.06, 'https://lsu.qualtrics.com/jfe/form/SV_eqUCqNZm8hUgtBc');
+    // } else if (windowWidth > windowHeight) {
+    //   surveyButton = new CustomButton("If you are willing\nto participate in a survey for\nScott Nelson's dissertation,\nPLEASE CLICK HERE", windowWidth / 2, windowHeight - (windowWidth * 0.1), windowWidth * 0.3, windowWidth * 0.12, windowWidth * 0.022, 'https://lsu.qualtrics.com/jfe/form/SV_eqUCqNZm8hUgtBc');
+    //   // print("button!");
+    // }
+    // sbutton = true;
   }
-  surveyButton.draw();
+  // surveyButton.draw();
 
   // let sbutton = false;
   // if (!sbutton) {
